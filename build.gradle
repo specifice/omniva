@@ -1,0 +1,40 @@
+group 'omniva'
+version '1.0-SNAPSHOT'
+
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: spring_boot_version
+  }
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+
+sourceCompatibility = 1.8
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: spring_boot_version
+  compile group: 'org.springframework.data', name: 'spring-data-cassandra', version: spring_data_cassandra_version
+
+  compile group: 'io.springfox', name: 'springfox-swagger2', version: swagger_version
+  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: swagger_version
+
+  compileOnly group: 'org.projectlombok', name: 'lombok', version: lombok_version
+
+  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: spring_boot_version
+  testCompile group: 'org.cassandraunit', name: 'cassandra-unit-spring', version: cassandra_unit_version
+}
+
+jar.manifest.attributes('Main-Class': 'omniva.assignment.Application')
+
+task runStandaloneEmbeddedCassandra(type: JavaExec) {
+  classpath sourceSets.test.runtimeClasspath
+  main = "omniva.assignment.StandaloneEmbeddedCassandraRunner"
+}
